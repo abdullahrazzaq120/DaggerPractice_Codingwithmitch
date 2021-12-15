@@ -1,0 +1,135 @@
+Index: app/src/main/java/com/example/daggerpractice_codingwithmitch/di/ActivityBuilderModule.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.daggerpractice_codingwithmitch.di;\r\n\r\nimport com.example.daggerpractice_codingwithmitch.di.auth.AuthViewModelsModule;\r\nimport com.example.daggerpractice_codingwithmitch.ui.auth.AuthActivity;\r\n\r\nimport dagger.Module;\r\nimport dagger.android.ContributesAndroidInjector;\r\n\r\n@Module\r\npublic abstract class ActivityBuilderModule {\r\n\r\n    @ContributesAndroidInjector(\r\n            modules = {AuthViewModelsModule.class}\r\n    )\r\n    abstract AuthActivity contributeAuthActivity();\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/daggerpractice_codingwithmitch/di/ActivityBuilderModule.java	(revision 58d43998c5dcfa3385bdd074cbdbac0907a7f724)
++++ app/src/main/java/com/example/daggerpractice_codingwithmitch/di/ActivityBuilderModule.java	(date 1639481097757)
+@@ -1,5 +1,6 @@
+ package com.example.daggerpractice_codingwithmitch.di;
+ 
++import com.example.daggerpractice_codingwithmitch.di.auth.AuthModule;
+ import com.example.daggerpractice_codingwithmitch.di.auth.AuthViewModelsModule;
+ import com.example.daggerpractice_codingwithmitch.ui.auth.AuthActivity;
+ 
+@@ -10,7 +11,7 @@
+ public abstract class ActivityBuilderModule {
+ 
+     @ContributesAndroidInjector(
+-            modules = {AuthViewModelsModule.class}
++            modules = {AuthViewModelsModule.class, AuthModule.class}
+     )
+     abstract AuthActivity contributeAuthActivity();
+ }
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'com.android.application'\r\n}\r\n\r\nandroid {\r\n    compileSdkVersion 31\r\n    buildToolsVersion \"30.0.3\"\r\n\r\n    defaultConfig {\r\n        applicationId \"com.example.daggerpractice_codingwithmitch\"\r\n        minSdkVersion 21\r\n        targetSdkVersion 31\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation 'androidx.appcompat:appcompat:1.4.0'\r\n    implementation 'com.google.android.material:material:1.4.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'\r\n    testImplementation 'junit:junit:4.+'\r\n\r\n    def dagger_version = \"2.35.1\"\r\n    implementation \"com.google.dagger:dagger:$dagger_version\"\r\n    annotationProcessor \"com.google.dagger:dagger-compiler:$dagger_version\"\r\n\r\n    implementation \"com.google.dagger:dagger-android:$dagger_version\"\r\n    implementation \"com.google.dagger:dagger-android-support:$dagger_version\"\r\n    annotationProcessor \"com.google.dagger:dagger-android-processor:$dagger_version\"\r\n\r\n    def glide_version = \"4.12.0\"\r\n    implementation \"com.github.bumptech.glide:glide:$glide_version\"\r\n    annotationProcessor \"com.github.bumptech.glide:compiler:$glide_version\"\r\n\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\r\n\r\n    // ViewModel and LiveData\r\n    def lifecycle_version = '2.2.0'\r\n    implementation \"androidx.lifecycle:lifecycle-extensions:$lifecycle_version\"\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 58d43998c5dcfa3385bdd074cbdbac0907a7f724)
++++ app/build.gradle	(date 1639467008629)
+@@ -53,4 +53,9 @@
+     // ViewModel and LiveData
+     def lifecycle_version = '2.2.0'
+     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
++
++    // Retrofit
++    def retrofitVersion = "2.9.0"
++    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
++    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+ }
+\ No newline at end of file
+Index: .idea/runConfigurations.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/runConfigurations.xml	(date 1639465017671)
++++ .idea/runConfigurations.xml	(date 1639465017671)
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RunConfigurationProducerService">
++    <option name="ignoredProducers">
++      <set>
++        <option value="com.android.tools.idea.compose.preview.runconfiguration.ComposePreviewRunConfigurationProducer" />
++      </set>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: app/src/main/java/com/example/daggerpractice_codingwithmitch/di/AppComponent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.daggerpractice_codingwithmitch.di;\r\n\r\nimport android.app.Application;\r\n\r\nimport com.example.daggerpractice_codingwithmitch.BaseApplication;\r\n\r\nimport dagger.BindsInstance;\r\nimport dagger.Component;\r\nimport dagger.android.AndroidInjector;\r\nimport dagger.android.support.AndroidSupportInjectionModule;\r\n\r\n@Component(\r\n        modules = {\r\n                AndroidSupportInjectionModule.class,\r\n                ActivityBuilderModule.class,\r\n                AppModule.class,\r\n                ViewModelFactoryModule.class,\r\n        }\r\n)\r\npublic interface AppComponent extends AndroidInjector<BaseApplication> {\r\n\r\n    @Component.Builder\r\n    interface Builder {\r\n\r\n        @BindsInstance\r\n        Builder application(Application application);\r\n\r\n        AppComponent build();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/daggerpractice_codingwithmitch/di/AppComponent.java	(revision 58d43998c5dcfa3385bdd074cbdbac0907a7f724)
++++ app/src/main/java/com/example/daggerpractice_codingwithmitch/di/AppComponent.java	(date 1639477282126)
+@@ -17,6 +17,7 @@
+                 ViewModelFactoryModule.class,
+         }
+ )
++
+ public interface AppComponent extends AndroidInjector<BaseApplication> {
+ 
+     @Component.Builder
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <bytecodeTargetLevel target=\"1.8\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/compiler.xml	(revision 58d43998c5dcfa3385bdd074cbdbac0907a7f724)
++++ .idea/compiler.xml	(date 1639466975233)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="CompilerConfiguration">
+-    <bytecodeTargetLevel target="1.8" />
++    <bytecodeTargetLevel target="11" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/java/com/example/daggerpractice_codingwithmitch/di/AppModule.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.daggerpractice_codingwithmitch.di;\r\n\r\nimport android.app.Application;\r\nimport android.graphics.drawable.Drawable;\r\n\r\nimport androidx.core.content.ContextCompat;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.bumptech.glide.RequestManager;\r\nimport com.bumptech.glide.request.RequestOptions;\r\nimport com.example.daggerpractice_codingwithmitch.R;\r\n\r\nimport dagger.Module;\r\nimport dagger.Provides;\r\n\r\n@Module\r\npublic class AppModule {\r\n\r\n    @Provides\r\n    static RequestOptions provideRequestOptions() {\r\n        return RequestOptions.placeholderOf(R.drawable.white_background)\r\n                .error(R.drawable.white_background);\r\n    }\r\n\r\n    @Provides\r\n    static RequestManager provideGlideInstance(Application application, RequestOptions requestOptions) {\r\n        return Glide.with(application)\r\n                .setDefaultRequestOptions(requestOptions);\r\n    }\r\n\r\n    @Provides\r\n    static Drawable provideDrawable(Application application) {\r\n        return ContextCompat.getDrawable(application, R.drawable.logo);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/daggerpractice_codingwithmitch/di/AppModule.java	(revision 58d43998c5dcfa3385bdd074cbdbac0907a7f724)
++++ app/src/main/java/com/example/daggerpractice_codingwithmitch/di/AppModule.java	(date 1639486442320)
+@@ -9,13 +9,26 @@
+ import com.bumptech.glide.RequestManager;
+ import com.bumptech.glide.request.RequestOptions;
+ import com.example.daggerpractice_codingwithmitch.R;
++import com.example.daggerpractice_codingwithmitch.Util.Constants;
++
++import javax.inject.Singleton;
+ 
+ import dagger.Module;
+ import dagger.Provides;
++import retrofit2.Retrofit;
++import retrofit2.converter.gson.GsonConverterFactory;
+ 
+ @Module
+ public class AppModule {
+ 
++    @Provides
++    static Retrofit provideRetrofitInstance() {
++        return new Retrofit.Builder()
++                .baseUrl(Constants.BASE_URL)
++                .addConverterFactory(GsonConverterFactory.create())
++                .build();
++    }
++
+     @Provides
+     static RequestOptions provideRequestOptions() {
+         return RequestOptions.placeholderOf(R.drawable.white_background)

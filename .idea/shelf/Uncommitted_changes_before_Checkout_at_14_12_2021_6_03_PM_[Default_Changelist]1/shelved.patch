@@ -1,0 +1,86 @@
+Index: app/src/main/java/com/example/daggerpractice_codingwithmitch/ui/auth/AuthViewModel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.daggerpractice_codingwithmitch.ui.auth;\r\n\r\nimport android.util.Log;\r\n\r\nimport androidx.lifecycle.ViewModel;\r\n\r\nimport javax.inject.Inject;\r\n\r\npublic class AuthViewModel extends ViewModel {\r\n\r\n    private static final String TAG = \"AuthViewModel\";\r\n    \r\n    @Inject\r\n    public AuthViewModel() {\r\n        Log.d(TAG, \"AuthViewModel: ViewModel is working...\");\r\n    }\r\n}\r\n
+===================================================================
+--- app/src/main/java/com/example/daggerpractice_codingwithmitch/ui/auth/AuthViewModel.java	(revision 58d43998c5dcfa3385bdd074cbdbac0907a7f724)
++++ app/src/main/java/com/example/daggerpractice_codingwithmitch/ui/auth/AuthViewModel.java	(date 1639486935952)
+@@ -4,14 +4,44 @@
+ 
+ import androidx.lifecycle.ViewModel;
+ 
++import com.example.daggerpractice_codingwithmitch.Network.auth.AuthApi;
++
+ import javax.inject.Inject;
+ 
++import okhttp3.ResponseBody;
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
++
+ public class AuthViewModel extends ViewModel {
+ 
+     private static final String TAG = "AuthViewModel";
+-    
++
++    private final AuthApi authApi;
++
+     @Inject
+-    public AuthViewModel() {
++    public AuthViewModel(AuthApi authApi) {
++        this.authApi = authApi;
++
++        if (authApi == null) {
++            Log.d(TAG, "AuthViewModel: Auth Api is null");
++        } else {
++            Log.d(TAG, "AuthViewModel: Auth Api is not null");
++
++//            authApi.getFakeRequest().enqueue(new Callback<ResponseBody>() {
++//                @Override
++//                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
++//                    Log.d(TAG, "onResponse: Body: " + response.body());
++//                }
++//
++//                @Override
++//                public void onFailure(Call<ResponseBody> call, Throwable t) {
++//
++//                }
++//            });
++
++        }
++
+         Log.d(TAG, "AuthViewModel: ViewModel is working...");
+     }
+ }
+Index: app/src/main/java/com/example/daggerpractice_codingwithmitch/ui/auth/AuthActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.daggerpractice_codingwithmitch.ui.auth;\r\n\r\nimport android.graphics.drawable.Drawable;\r\nimport android.os.Bundle;\r\nimport android.widget.ImageView;\r\n\r\nimport androidx.lifecycle.ViewModelProvider;\r\nimport androidx.lifecycle.ViewModelProviders;\r\n\r\nimport com.bumptech.glide.RequestManager;\r\nimport com.example.daggerpractice_codingwithmitch.R;\r\nimport com.example.daggerpractice_codingwithmitch.viewmodels.ViewModelProviderFactory;\r\n\r\nimport javax.inject.Inject;\r\n\r\nimport dagger.android.support.DaggerAppCompatActivity;\r\n\r\npublic class AuthActivity extends DaggerAppCompatActivity {\r\n\r\n    private static final String TAG = \"AuthActivity\";\r\n\r\n    private AuthViewModel viewModel;\r\n\r\n    @Inject\r\n    ViewModelProviderFactory providerFactory;\r\n\r\n    @Inject\r\n    Drawable logo;\r\n\r\n    @Inject\r\n    RequestManager requestManager;\r\n\r\n    ImageView imageView;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_auth);\r\n\r\n        viewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);\r\n\r\n        imageView = findViewById(R.id.login_logo);\r\n        setLogo();\r\n    }\r\n\r\n    private void setLogo() {\r\n\r\n        requestManager\r\n                .load(logo)\r\n                .into(imageView);\r\n    }\r\n}
+===================================================================
+--- app/src/main/java/com/example/daggerpractice_codingwithmitch/ui/auth/AuthActivity.java	(revision 58d43998c5dcfa3385bdd074cbdbac0907a7f724)
++++ app/src/main/java/com/example/daggerpractice_codingwithmitch/ui/auth/AuthActivity.java	(date 1639283007914)
+@@ -5,7 +5,6 @@
+ import android.widget.ImageView;
+ 
+ import androidx.lifecycle.ViewModelProvider;
+-import androidx.lifecycle.ViewModelProviders;
+ 
+ import com.bumptech.glide.RequestManager;
+ import com.example.daggerpractice_codingwithmitch.R;
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" default=\"false\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 58d43998c5dcfa3385bdd074cbdbac0907a7f724)
++++ .idea/misc.xml	(date 1639466975224)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
