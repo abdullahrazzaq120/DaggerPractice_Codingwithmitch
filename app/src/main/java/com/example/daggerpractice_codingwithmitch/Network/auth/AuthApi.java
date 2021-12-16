@@ -1,11 +1,16 @@
 package com.example.daggerpractice_codingwithmitch.Network.auth;
 
-import okhttp3.ResponseBody;
+import com.example.daggerpractice_codingwithmitch.Models.User;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface AuthApi {
 
-    @GET
-    Call<ResponseBody> getFakeRequest();
+    @GET("{id}")
+    Call<User> getUser(@Path("id") int id);
+
+    @GET("https://jsonplaceholder.typicode.com/users/")
+    Call<User> getAllUsers();
 }

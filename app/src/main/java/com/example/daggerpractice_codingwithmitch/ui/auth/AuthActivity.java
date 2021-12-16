@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.RequestManager;
 import com.example.daggerpractice_codingwithmitch.R;
 import com.example.daggerpractice_codingwithmitch.viewmodels.ViewModelProviderFactory;
+import com.google.android.material.textfield.TextInputEditText;
 
 import javax.inject.Inject;
 
@@ -19,6 +20,7 @@ public class AuthActivity extends DaggerAppCompatActivity {
     private static final String TAG = "AuthActivity";
 
     private AuthViewModel viewModel;
+    TextInputEditText textInputEditText;
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -39,6 +41,10 @@ public class AuthActivity extends DaggerAppCompatActivity {
         viewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
 
         imageView = findViewById(R.id.login_logo);
+        textInputEditText = findViewById(R.id.user_id_input);
+
+        viewModel.authenticateWithId(Integer.parseInt(textInputEditText.getText().toString()));
+
         setLogo();
     }
 

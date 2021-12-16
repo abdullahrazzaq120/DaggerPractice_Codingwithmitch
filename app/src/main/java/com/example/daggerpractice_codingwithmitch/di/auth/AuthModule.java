@@ -2,6 +2,8 @@ package com.example.daggerpractice_codingwithmitch.di.auth;
 
 import com.example.daggerpractice_codingwithmitch.Network.auth.AuthApi;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
