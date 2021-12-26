@@ -2,7 +2,11 @@ package com.example.daggerpractice_codingwithmitch.ui.auth;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -15,12 +19,13 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class AuthActivity extends DaggerAppCompatActivity {
+public class AuthActivity extends DaggerAppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "AuthActivity";
 
     private AuthViewModel viewModel;
     TextInputEditText textInputEditText;
+    ProgressBar progressBar;
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -42,8 +47,32 @@ public class AuthActivity extends DaggerAppCompatActivity {
 
         imageView = findViewById(R.id.login_logo);
         textInputEditText = findViewById(R.id.user_id_input);
+        progressBar = findViewById(R.id.progress_bar);
 
-        viewModel.authenticateWithId(Integer.parseInt(textInputEditText.getText().toString()));
+        findViewById(R.id.login_button).setOnClickListener(this);
+
+        viewModel.observeUser()
+                .observe(AuthActivity.this, response -> {
+                    if (response == null)
+                        return;
+                    switch (response.status) {
+                        case LOADING:
+                            progressBar.setVisibility(View.VISIBLE);
+                            break;
+                        case ERROR:
+                            progressBar.setVisibility(View.GONE);
+                            Log.e(TAG, "onCreate: Error: " + response.message);
+                            break;
+                        case AUTHENTICATED:
+                            progressBar.setVisibility(View.GONE);
+                            Log.d(TAG, "onCreate: User: " + response.data.getEmail());
+                            textInputEditText.setText(response.data.getEmail());
+                            break;
+                        case NOT_AUTHENTICATED:
+                            progressBar.setVisibility(View.GONE);
+                            break;
+                    }
+                });
 
         setLogo();
     }
@@ -53,5 +82,18 @@ public class AuthActivity extends DaggerAppCompatActivity {
         requestManager
                 .load(logo)
                 .into(imageView);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.login_button:
+                login();
+                break;
+        }
+    }
+
+    private void login() {
+        viewModel.authenticateWithId(Integer.parseInt(textInputEditText.getText().toString()));
     }
 }

@@ -10,7 +10,4 @@ public interface AuthApi {
 
     @GET("{id}")
     Call<User> getUser(@Path("id") int id);
-
-    @GET("https://jsonplaceholder.typicode.com/users/")
-    Call<User> getAllUsers();
 }

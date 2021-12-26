@@ -1,6 +1,5 @@
 package com.example.daggerpractice_codingwithmitch.ui.auth;
 
-import android.arch.lifecycle.LiveDataReactiveStreams;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -22,7 +21,7 @@ public class AuthViewModel extends ViewModel {
 
     private final AuthApi authApi;
 
-    MediatorLiveData<User> authUser = new MediatorLiveData<>();
+    MediatorLiveData<AuthResource<User>> authUser = new MediatorLiveData<>();
 
     @Inject
     public AuthViewModel(AuthApi authApi) {
@@ -39,35 +38,35 @@ public class AuthViewModel extends ViewModel {
 
     public void authenticateWithId(int id) {
 
+        authUser.setValue(AuthResource.loading(null));
+
         Call<User> userCall = authApi.getUser(id);
         userCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Log.d(TAG, "onResponse: Email: " + response.body().getEmail());
-
                         User user = new User();
                         user.setEmail(response.body().getEmail());
                         user.setUsername(response.body().getUsername());
                         user.setId(response.body().getId());
                         user.setWebsite(response.body().getWebsite());
 
-                        authUser.setValue(user);
+                        authUser.setValue(AuthResource.authenticated(user));
                     }
                 } else {
-                    Log.d(TAG, "onResponse: Unsuccessful: " + response.errorBody());
+                    authUser.setValue(AuthResource.error(response.message() + "", null));
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.getMessage());
+                authUser.setValue(AuthResource.error(t.getMessage(), null));
             }
         });
     }
 
-    public LiveData<User> observeUser() {
+    public LiveData<AuthResource<User>> observeUser() {
         return authUser;
     }
 }

@@ -11,8 +11,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.daggerpractice_codingwithmitch.R;
 import com.example.daggerpractice_codingwithmitch.Util.Constants;
 
+import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
+import dagger.Binds;
+import dagger.BindsInstance;
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
@@ -20,6 +23,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AppModule {
+
+    String val = "Abdullah";
 
     @Provides
     static Retrofit provideRetrofitInstance() {
