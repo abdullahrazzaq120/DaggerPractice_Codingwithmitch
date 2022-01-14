@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Android\\PersonalAndroidProjects\\DaggerPractice_Codingwithmitch\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v26\\values-v26.xml",
+            "outputFile": "G:\\AndroidStudioProjects04\\DaggerPractice_Codingwithmitch\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v26\\values-v26.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\DELL\\.gradle\\caches\\transforms-2\\files-2.1\\60ca376e6b08eacfd0ece72533ff5823\\appcompat-1.4.0\\res\\values-v26\\values-v26.xml",
+                    "source": "C:\\Users\\Abdullah\\.gradle\\caches\\transforms-2\\files-2.1\\8feb1edc8121d458362dfde215aa6305\\appcompat-1.4.0\\res\\values-v26\\values-v26.xml",
                     "from": {
                         "startLines": "2,3,4,8,12,16",
                         "startColumns": "4,4,4,4,4,4",
