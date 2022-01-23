@@ -1,17 +1,18 @@
 package com.example.daggerpractice_codingwithmitch.ui.auth;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.RequestManager;
 import com.example.daggerpractice_codingwithmitch.R;
+import com.example.daggerpractice_codingwithmitch.main.MainActivity;
 import com.example.daggerpractice_codingwithmitch.viewmodels.ViewModelProviderFactory;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -51,7 +52,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
 
         findViewById(R.id.login_button).setOnClickListener(this);
 
-        viewModel.observeUser()
+        viewModel.observeAuthState()
                 .observe(AuthActivity.this, response -> {
                     if (response == null)
                         return;
@@ -61,12 +62,13 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                             break;
                         case ERROR:
                             progressBar.setVisibility(View.GONE);
-                            Log.e(TAG, "onCreate: Error: " + response.message);
+                            Log.e(TAG, "onCreate: Error: User not exists. " + response.message);
                             break;
                         case AUTHENTICATED:
                             progressBar.setVisibility(View.GONE);
                             Log.d(TAG, "onCreate: User: " + response.data.getEmail());
                             textInputEditText.setText(response.data.getEmail());
+                            onLoginSuccess();
                             break;
                         case NOT_AUTHENTICATED:
                             progressBar.setVisibility(View.GONE);
@@ -75,6 +77,12 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                 });
 
         setLogo();
+    }
+
+    private void onLoginSuccess() {
+        Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setLogo() {

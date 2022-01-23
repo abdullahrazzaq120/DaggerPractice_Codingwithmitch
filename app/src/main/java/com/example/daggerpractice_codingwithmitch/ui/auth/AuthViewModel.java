@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.daggerpractice_codingwithmitch.Models.User;
 import com.example.daggerpractice_codingwithmitch.Network.auth.AuthApi;
+import com.example.daggerpractice_codingwithmitch.SessionManager;
 
 import javax.inject.Inject;
 
@@ -20,25 +21,22 @@ public class AuthViewModel extends ViewModel {
     private static final String TAG = "AuthViewModel";
 
     private final AuthApi authApi;
+    SessionManager sessionManager;
 
     MediatorLiveData<AuthResource<User>> authUser = new MediatorLiveData<>();
 
     @Inject
-    public AuthViewModel(AuthApi authApi) {
+    public AuthViewModel(AuthApi authApi, SessionManager sessionManager) {
         this.authApi = authApi;
-
-        Log.d(TAG, "AuthViewModel: ViewModel is working...");
-
-        if (authApi == null) {
-            Log.d(TAG, "AuthViewModel: Auth Api is null");
-        } else {
-            Log.d(TAG, "AuthViewModel: Auth Api is not null");
-        }
+        this.sessionManager = sessionManager;
     }
 
     public void authenticateWithId(int id) {
+        Log.d(TAG, "authenticateWithId: Logging in...");
+        sessionManager.authenticationWithId(queryUserId(id));
+    }
 
-        authUser.setValue(AuthResource.loading(null));
+    private LiveData<AuthResource<User>> queryUserId(int id) {
 
         Call<User> userCall = authApi.getUser(id);
         userCall.enqueue(new Callback<User>() {
@@ -53,9 +51,11 @@ public class AuthViewModel extends ViewModel {
                         user.setWebsite(response.body().getWebsite());
 
                         authUser.setValue(AuthResource.authenticated(user));
+                    } else {
+                        authUser.setValue(AuthResource.error(response.message(), null));
                     }
                 } else {
-                    authUser.setValue(AuthResource.error(response.message() + "", null));
+                    authUser.setValue(AuthResource.error(response.message(), null));
                 }
             }
 
@@ -64,9 +64,11 @@ public class AuthViewModel extends ViewModel {
                 authUser.setValue(AuthResource.error(t.getMessage(), null));
             }
         });
+
+        return authUser;
     }
 
-    public LiveData<AuthResource<User>> observeUser() {
-        return authUser;
+    public LiveData<AuthResource<User>> observeAuthState() {
+        return sessionManager.getAuthUser();
     }
 }

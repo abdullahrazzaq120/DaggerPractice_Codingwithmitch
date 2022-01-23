@@ -24,8 +24,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class AppModule {
 
-    String val = "Abdullah";
-
     @Provides
     static Retrofit provideRetrofitInstance() {
         return new Retrofit.Builder()
