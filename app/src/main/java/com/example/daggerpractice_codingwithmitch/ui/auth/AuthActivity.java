@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.RequestManager;
 import com.example.daggerpractice_codingwithmitch.R;
-import com.example.daggerpractice_codingwithmitch.main.MainActivity;
+import com.example.daggerpractice_codingwithmitch.ui.main.MainActivity;
 import com.example.daggerpractice_codingwithmitch.viewmodels.ViewModelProviderFactory;
 import com.google.android.material.textfield.TextInputEditText;
 

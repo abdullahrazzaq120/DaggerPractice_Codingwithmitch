@@ -18,7 +18,7 @@ import dagger.android.support.DaggerAppCompatActivity;
 public class BaseActivity extends DaggerAppCompatActivity {
 
     @Inject
-    SessionManager sessionManager;
+    protected SessionManager sessionManager;
     private static final String TAG = "BaseActivity";
 
     @Override

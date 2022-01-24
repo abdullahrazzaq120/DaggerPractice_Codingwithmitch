@@ -19,14 +19,13 @@ import retrofit2.Response;
 public class AuthViewModel extends ViewModel {
 
     private static final String TAG = "AuthViewModel";
-
     private final AuthApi authApi;
     SessionManager sessionManager;
-
     MediatorLiveData<AuthResource<User>> authUser = new MediatorLiveData<>();
 
     @Inject
     public AuthViewModel(AuthApi authApi, SessionManager sessionManager) {
+        Log.d(TAG, "AuthViewModel: AuthViewModel is running...");
         this.authApi = authApi;
         this.sessionManager = sessionManager;
     }
