@@ -20,6 +20,8 @@ public class AuthViewModel extends ViewModel {
 
     private static final String TAG = "AuthViewModel";
     private final AuthApi authApi;
+
+    //1st way of injecting Session Manager is by @Inject constructor
     SessionManager sessionManager;
     MediatorLiveData<AuthResource<User>> authUser = new MediatorLiveData<>();
 

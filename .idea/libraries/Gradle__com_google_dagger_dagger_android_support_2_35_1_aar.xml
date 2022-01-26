@@ -3,8 +3,6 @@
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3548dd043ad8a47d9f27b67ac261f70f/dagger-android-support-2.35.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/33317607b4cea2db13a1c7214fd8c0c4/dagger-android-support-2.35.1/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3548dd043ad8a47d9f27b67ac261f70f/dagger-android-support-2.35.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3548dd043ad8a47d9f27b67ac261f70f/dagger-android-support-2.35.1/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c3276880fc9ad4c6ac0354b0f2632023/dagger-android-support-2.35.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c3276880fc9ad4c6ac0354b0f2632023/dagger-android-support-2.35.1/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c3276880fc9ad4c6ac0354b0f2632023/dagger-android-support-2.35.1/res" />
