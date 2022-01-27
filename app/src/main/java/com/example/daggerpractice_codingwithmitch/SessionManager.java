@@ -7,7 +7,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import com.example.daggerpractice_codingwithmitch.Models.User;
-import com.example.daggerpractice_codingwithmitch.ui.auth.AuthResource;
+import com.example.daggerpractice_codingwithmitch.ui.ApiCallResource;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,20 +17,25 @@ public class SessionManager {
 
     private static final String TAG = "SessionManager";
 
-    MediatorLiveData<AuthResource<User>> cachedUser = new MediatorLiveData<>();
+    MediatorLiveData<ApiCallResource<User>> cachedUser = new MediatorLiveData<>();
+
+    /**
+     * we can either inject dependency by putting @Inject annotation in constructor of a specific class or
+     * we can also make them dependent in any module using @Provide annotation
+     **/
 
     @Inject
     public SessionManager() {
     }
 
-    public void authenticationWithId(final LiveData<AuthResource<User>> source) {
+    public void authenticationWithId(final LiveData<ApiCallResource<User>> source) {
         if (cachedUser != null) {
-            cachedUser.setValue(AuthResource.loading(null));
+            cachedUser.setValue(ApiCallResource.loading(null));
 
-            cachedUser.addSource(source, new Observer<AuthResource<User>>() {
+            cachedUser.addSource(source, new Observer<ApiCallResource<User>>() {
                 @Override
-                public void onChanged(AuthResource<User> userAuthResource) {
-                    cachedUser.setValue(userAuthResource);
+                public void onChanged(ApiCallResource<User> userApiCallResource) {
+                    cachedUser.setValue(userApiCallResource);
                     cachedUser.removeSource(source);
                 }
             });
@@ -39,10 +44,10 @@ public class SessionManager {
 
     public void logout() {
         Log.d(TAG, "logout: Logging out...");
-        cachedUser.setValue(AuthResource.logout());
+        cachedUser.setValue(ApiCallResource.logout());
     }
 
-    public LiveData<AuthResource<User>> getAuthUser() {
+    public LiveData<ApiCallResource<User>> getAuthUser() {
         return cachedUser;
     }
 }

@@ -1,7 +1,9 @@
 package com.example.daggerpractice_codingwithmitch.di;
 
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -10,6 +12,7 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.daggerpractice_codingwithmitch.R;
 import com.example.daggerpractice_codingwithmitch.Util.Constants;
+import com.example.daggerpractice_codingwithmitch.ui.main.MainActivity;
 
 import javax.inject.Qualifier;
 import javax.inject.Singleton;

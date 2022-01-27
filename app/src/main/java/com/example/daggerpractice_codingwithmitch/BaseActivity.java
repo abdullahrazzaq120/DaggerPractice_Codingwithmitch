@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer;
 
 import com.example.daggerpractice_codingwithmitch.Models.User;
 import com.example.daggerpractice_codingwithmitch.ui.auth.AuthActivity;
-import com.example.daggerpractice_codingwithmitch.ui.auth.AuthResource;
+import com.example.daggerpractice_codingwithmitch.ui.ApiCallResource;
 
 import javax.inject.Inject;
 
@@ -25,12 +25,12 @@ public class BaseActivity extends DaggerAppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sessionManager.getAuthUser().observe(this, new Observer<AuthResource<User>>() {
+        sessionManager.getAuthUser().observe(this, new Observer<ApiCallResource<User>>() {
             @Override
-            public void onChanged(AuthResource<User> userAuthResource) {
-                if (userAuthResource == null)
+            public void onChanged(ApiCallResource<User> userApiCallResource) {
+                if (userApiCallResource == null)
                     return;
-                switch (userAuthResource.status) {
+                switch (userApiCallResource.status) {
                     case LOADING:
                         break;
                     case ERROR:

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.daggerpractice_codingwithmitch.Models.User;
 import com.example.daggerpractice_codingwithmitch.Network.auth.AuthApi;
 import com.example.daggerpractice_codingwithmitch.SessionManager;
+import com.example.daggerpractice_codingwithmitch.ui.ApiCallResource;
 
 import javax.inject.Inject;
 
@@ -21,15 +22,15 @@ public class AuthViewModel extends ViewModel {
     private static final String TAG = "AuthViewModel";
     private final AuthApi authApi;
 
-    //1st way of injecting Session Manager is by @Inject constructor
+    //1st way of injecting Session Manager is by @Inject object
+    @Inject
     SessionManager sessionManager;
-    MediatorLiveData<AuthResource<User>> authUser = new MediatorLiveData<>();
+    MediatorLiveData<ApiCallResource<User>> authUser = new MediatorLiveData<>();
 
     @Inject
-    public AuthViewModel(AuthApi authApi, SessionManager sessionManager) {
+    public AuthViewModel(AuthApi authApi) {
         Log.d(TAG, "AuthViewModel: AuthViewModel is running...");
         this.authApi = authApi;
-        this.sessionManager = sessionManager;
     }
 
     public void authenticateWithId(int id) {
@@ -37,7 +38,7 @@ public class AuthViewModel extends ViewModel {
         sessionManager.authenticationWithId(queryUserId(id));
     }
 
-    private LiveData<AuthResource<User>> queryUserId(int id) {
+    private LiveData<ApiCallResource<User>> queryUserId(int id) {
 
         Call<User> userCall = authApi.getUser(id);
         userCall.enqueue(new Callback<User>() {
@@ -51,25 +52,25 @@ public class AuthViewModel extends ViewModel {
                         user.setId(response.body().getId());
                         user.setWebsite(response.body().getWebsite());
 
-                        authUser.setValue(AuthResource.authenticated(user));
+                        authUser.setValue(ApiCallResource.authenticated(user));
                     } else {
-                        authUser.setValue(AuthResource.error(response.message(), null));
+                        authUser.setValue(ApiCallResource.error(response.message(), null));
                     }
                 } else {
-                    authUser.setValue(AuthResource.error(response.message(), null));
+                    authUser.setValue(ApiCallResource.error(response.message(), null));
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                authUser.setValue(AuthResource.error(t.getMessage(), null));
+                authUser.setValue(ApiCallResource.error(t.getMessage(), null));
             }
         });
 
         return authUser;
     }
 
-    public LiveData<AuthResource<User>> observeAuthState() {
+    public LiveData<ApiCallResource<User>> observeAuthState() {
         return sessionManager.getAuthUser();
     }
 }

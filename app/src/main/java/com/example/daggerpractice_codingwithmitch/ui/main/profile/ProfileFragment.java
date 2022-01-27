@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.daggerpractice_codingwithmitch.Models.User;
 import com.example.daggerpractice_codingwithmitch.R;
-import com.example.daggerpractice_codingwithmitch.ui.auth.AuthResource;
+import com.example.daggerpractice_codingwithmitch.ui.ApiCallResource;
 import com.example.daggerpractice_codingwithmitch.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -48,19 +48,19 @@ public class ProfileFragment extends DaggerFragment {
 
     private void subscribeObservers() {
         viewModel.getAuthenticatedUser().removeObservers(getViewLifecycleOwner());
-        viewModel.getAuthenticatedUser().observe(getViewLifecycleOwner(), new Observer<AuthResource<User>>() {
+        viewModel.getAuthenticatedUser().observe(getViewLifecycleOwner(), new Observer<ApiCallResource<User>>() {
             @Override
-            public void onChanged(AuthResource<User> userAuthResource) {
-                if (userAuthResource == null)
+            public void onChanged(ApiCallResource<User> userApiCallResource) {
+                if (userApiCallResource == null)
                     return;
 
-                switch (userAuthResource.status) {
+                switch (userApiCallResource.status) {
                     case ERROR:
-                        Log.e(TAG, "onChanged: Profile Error: " + userAuthResource.message);
-                        Toast.makeText(getActivity(), "onChanged: Profile Error: " + userAuthResource.message, Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "onChanged: Profile Error: " + userApiCallResource.message);
+                        Toast.makeText(getActivity(), "onChanged: Profile Error: " + userApiCallResource.message, Toast.LENGTH_SHORT).show();
                         break;
                     case AUTHENTICATED:
-                        setUserDetails(userAuthResource.data);
+                        setUserDetails(userApiCallResource.data);
                         break;
                 }
             }
