@@ -17,6 +17,7 @@ import com.example.daggerpractice_codingwithmitch.viewmodels.ViewModelProviderFa
 import com.google.android.material.textfield.TextInputEditText;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
@@ -32,12 +33,17 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
     ViewModelProviderFactory providerFactory;
 
     @Inject
-    Drawable logo;
+    @Named("logo1")
+    Drawable logo1;
+
+    @Inject
+    @Named("logo2")
+    Drawable logo2;
 
     @Inject
     RequestManager requestManager;
 
-    ImageView imageView;
+    ImageView imageView1, imageView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
 
         viewModel = new ViewModelProvider(this, providerFactory).get(AuthViewModel.class);
 
-        imageView = findViewById(R.id.login_logo);
+        imageView1 = findViewById(R.id.login_logo1);
+        imageView2 = findViewById(R.id.login_logo2);
         textInputEditText = findViewById(R.id.user_id_input);
         progressBar = findViewById(R.id.progress_bar);
 
@@ -76,7 +83,8 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
                     }
                 });
 
-        setLogo();
+        setLogo1();
+        setLogo2();
     }
 
     private void onLoginSuccess() {
@@ -85,11 +93,19 @@ public class AuthActivity extends DaggerAppCompatActivity implements View.OnClic
         finish();
     }
 
-    private void setLogo() {
+    private void setLogo1() {
 
         requestManager
-                .load(logo)
-                .into(imageView);
+                .load(logo1)
+                .into(imageView1);
+    }
+
+    private void setLogo2() {
+
+        requestManager
+                .load(logo2)
+                .into(imageView2);
+        Log.d(TAG, "setLogo2: " + logo2);
     }
 
     @Override

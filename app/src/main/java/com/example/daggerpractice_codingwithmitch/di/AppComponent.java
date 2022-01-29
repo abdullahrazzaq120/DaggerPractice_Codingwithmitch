@@ -12,6 +12,7 @@ import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 
+@Singleton
 @Component(
         modules = {
                 AndroidSupportInjectionModule.class,
@@ -20,8 +21,6 @@ import dagger.android.support.AndroidSupportInjectionModule;
                 ViewModelFactoryModule.class,
         }
 )
-
-@Singleton
 public interface AppComponent extends AndroidInjector<BaseApplication> {
 
     SessionManager sessionManager();

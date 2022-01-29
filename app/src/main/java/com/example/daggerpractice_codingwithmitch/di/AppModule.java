@@ -14,6 +14,7 @@ import com.example.daggerpractice_codingwithmitch.R;
 import com.example.daggerpractice_codingwithmitch.Util.Constants;
 import com.example.daggerpractice_codingwithmitch.ui.main.MainActivity;
 
+import javax.inject.Named;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
@@ -27,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class AppModule {
 
+    @Singleton
     @Provides
     static Retrofit provideRetrofitInstance() {
         return new Retrofit.Builder()
@@ -35,20 +37,31 @@ public class AppModule {
                 .build();
     }
 
+    @Singleton
     @Provides
     static RequestOptions provideRequestOptions() {
         return RequestOptions.placeholderOf(R.drawable.white_background)
                 .error(R.drawable.white_background);
     }
 
+    @Singleton
     @Provides
     static RequestManager provideGlideInstance(Application application, RequestOptions requestOptions) {
         return Glide.with(application)
                 .setDefaultRequestOptions(requestOptions);
     }
 
+    @Singleton
+    @Named("logo1")
     @Provides
-    static Drawable provideDrawable(Application application) {
+    static Drawable provideDrawable1(Application application) {
         return ContextCompat.getDrawable(application, R.drawable.logo);
+    }
+
+    @Singleton
+    @Named("logo2")
+    @Provides
+    static Drawable provideDrawable2(Application application) {
+        return ContextCompat.getDrawable(application, R.drawable.mypix);
     }
 }

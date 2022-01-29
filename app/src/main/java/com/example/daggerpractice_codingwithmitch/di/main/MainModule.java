@@ -18,18 +18,21 @@ public class MainModule {
 
     private static final String TAG = "MainModule";
 
+    @MainScope
+    @Provides
+    static MainApi provideMainApi(Retrofit retrofit) {
+        return retrofit.create(MainApi.class);
+    }
+
+    @MainScope
     @Provides
     static PostsRecyclerAdapter provideAdapter() {
         return new PostsRecyclerAdapter();
     }
 
+    @MainScope
     @Provides
     static VerticalSpacingItemDecoration provideItemDecoration() {
         return new VerticalSpacingItemDecoration(15);
-    }
-
-    @Provides
-    static MainApi provideMainApi(Retrofit retrofit) {
-        return retrofit.create(MainApi.class);
     }
 }
